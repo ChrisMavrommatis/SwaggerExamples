@@ -16,7 +16,7 @@
 		<PackageLicenseFile>LICENSE</PackageLicenseFile>
 		<RootNamespace>ChrisMavrommatis.SwaggerExamples</RootNamespace>
 		<AllowedOutputExtensionsInPackageBuildOutputFolder>$(AllowedOutputExtensionsInPackageBuildOutputFolder);.pdb</AllowedOutputExtensionsInPackageBuildOutputFolder>
-		<Description> A library enabling the creation of custom Swagger (OpenAPI Specification) examples for enhanced API documentation.</Description>
+		<Description>A library enabling the creation of custom Swagger (OpenAPI Specification) examples for enhanced API documentation.</Description>
 		<PackageTags>OpenAPI, Swagger, RESTful, API Design, Documentation, Custom Examples, Library</PackageTags>
 		<RepositoryType>git</RepositoryType>
 	</PropertyGroup>
