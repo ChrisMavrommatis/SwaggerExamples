@@ -2,7 +2,7 @@
 using ChrisMavrommatis.SwaggerExamples.Services;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace ChrisMavrommatis.SwaggerExamples.ExtensionsMethods;
+namespace ChrisMavrommatis.SwaggerExamples;
 
 public static class ServiceCollectionExtensions
 {
