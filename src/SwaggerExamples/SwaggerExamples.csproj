@@ -1,0 +1,35 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFramework>net8.0</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+		<PackageId>ChrisMavrommatis.SwaggerExamples</PackageId>
+		<Title>ChrisMavrommatis.SwaggerExamples</Title>
+		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+		<Authors>Chris Mavrommatis</Authors>
+		<PackageProjectUrl>https://github.com/ChrisMavrommatis/SwaggerExamples</PackageProjectUrl>
+		<RepositoryUrl>https://github.com/ChrisMavrommatis/SwaggerExamples</RepositoryUrl>
+		<Version>1.0.0</Version>
+		<AssemblyName>ChrisMavrommatis.SwaggerExamples</AssemblyName>
+		<PackageReadmeFile>README.md</PackageReadmeFile>
+		<PackageLicenseFile>LICENSE</PackageLicenseFile>
+		<RootNamespace>ChrisMavrommatis.SwaggerExamples</RootNamespace>
+		<AllowedOutputExtensionsInPackageBuildOutputFolder>$(AllowedOutputExtensionsInPackageBuildOutputFolder);.pdb</AllowedOutputExtensionsInPackageBuildOutputFolder>
+		<Description> A library enabling the creation of custom Swagger (OpenAPI Specification) examples for enhanced API documentation.</Description>
+		<PackageTags>OpenAPI, Swagger, RESTful, API Design, Documentation, Custom Examples, Library</PackageTags>
+		<RepositoryType>git</RepositoryType>
+	</PropertyGroup>
+
+
+	<ItemGroup>
+		<None Include="..\..\LICENSE" Pack="true" PackagePath="\" />
+		<None Include="..\..\README.md" Pack="true" PackagePath="\" />
+	</ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="Microsoft.Extensions.Options" Version="8.0.2" />
+		<PackageReference Include="Microsoft.OpenApi" Version="1.6.15" />
+		<PackageReference Include="Swashbuckle.AspNetCore.SwaggerGen" Version="6.6.2" />
+	</ItemGroup>
+
+</Project>
