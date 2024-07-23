@@ -2,7 +2,7 @@ name: Publish NuGet Package
 
 on:
   release:
-    types: [ "published", "edited" ]
+    types: [ "published" ]
 
 jobs:
   publish:
