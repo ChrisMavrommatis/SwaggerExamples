@@ -1,93 +1,99 @@
 # SwaggerExamples
 
-This repository contains the code for the SwaggerExamples project. The project provides functionality for generating Swagger examples in C#.
+Welcome to the `ChrisMavrommatis.SwaggerExamples` repository. This project provides a solution for generating Swagger examples in C#, aimed at enriching API documentation and enhancing usability for developers and API designers.
 
-SwaggerExamples is an essential resource for developers and API designers seeking to enrich their APIs. 
-It offers the ability to add one or multiple examples requests and responses, enhancing your API's documentation and usability.
+## Overview
+The SwaggerExamples project enables you to add one or multiple example requests and responses to your API documentation. These examples help improve the clarity and effectiveness of your API's documentation.
 
+## Installation
+To integrate SwaggerExamples into your project, follow these steps:
 
-## Usage
+**1. Add the NuGet package**
+   ```bash
+   dotnet add package ChrisMavrommatis.SwaggerExamples
+   ```
 
-To use the SwaggerExamples project, follow these steps:
+**2. Configure the service collection**
+ 
+   In your startup class, use the AddSwaggerExamples extension method to configure the service collection:
+   ```csharp
+   builder.Services.AddSwaggerExamples(options =>
+   {
+       options.JsonSerializerOptions.PropertyNamingPolicy = System.Text.Json.JsonNamingPolicy.CamelCase;
+       options.JsonSerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
+   });
+   ```
 
-1. Add the `SwaggerExamples` nuget package to your project.
-2. In your startup class, use the `AddSwaggerExamples` extension method to configure the service collection:
-```csharp
-builder.Services.AddSwaggerExamples(options =>
-{
-	options.JsonSerializerOptions.PropertyNamingPolicy = System.Text.Json.JsonNamingPolicy.CamelCase;
-	// ignore null
-	options.JsonSerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
-});
-```
+**3. Configure Swagger:**
 
-3. While Configuring `SwaggerGenOptions` user the `UseSwaggerExamples` extension method to configure swagger to be able to read the examples.
-```csharp
-builder.Services.Configure<SwaggerGenOptions>(options => 
-{
-	options.UseSwaggerExamples();
-});
-```
+   While configuring SwaggerGenOptions, use the UseSwaggerExamples extension method to enable Swagger to read the examples:
+   ```csharp
+   builder.Services.Configure<SwaggerGenOptions>(options => 
+   {
+       options.UseSwaggerExamples();
+   });
+   ```
 
-4. Build and run your project. The Swagger examples you make and provide will be generated and included in the Swagger documentation.
+**4. Build and run your project**
 
-## Making Examples
+The Swagger examples you create and assign to actions will be automatically included in the Swagger documentation.
 
-In order to make an example you must create a class that inherits either from `SingleSwaggerExamplesProvider<T>` or from `MultipleSwaggerExamplesProvider<T>` where T is the model in the API.
+## Creating Examples
 
-If using the `SingleSwaggerExamplesProvider<T>` then you must implement the `GetExample` method that returns the API object
-If you want to use the `MultipleSwaggerExamplesProvider<T>` then you must implement the `GetExamples` method that returns an `IEnumerable<ISwaggerExample<T>>`
+To create an example, you must create a class that inherits from either `SingleSwaggerExamplesProvider<T>` or `MultipleSwaggerExamplesProvider<T>`, where `T` is the model used in the API.
 
 ### Single Example
+For a single example, implement the GetExample method:
+
 ```csharp
 internal class CustomQueryRequestExample : SingleSwaggerExamplesProvider<CustomQueryRequest>
 {
-	public override CustomQueryRequest GetExample()
-	{
-		return new CustomQueryRequest
-		{
-			Bins = new List<Bin>
-			{
-				new () { ID = "custom_bin_1", Length = 10, Width = 40, Height = 60 },
-				new () { ID = "custom_bin_2", Length = 20, Width = 40, Height = 60 },
-
-			},
-			Items = new List<Box>
-			{
-				new () { ID = "box_1", Quantity = 2, Length = 2, Width = 5, Height = 10 },
-				new () { ID = "box_2", Quantity = 1, Length = 12, Width = 15, Height = 10 },
-				new() { ID = "box_3", Quantity = 1, Length = 12, Width = 10, Height = 15 },
-			}
-		};
-	}
+    public override CustomQueryRequest GetExample()
+    {
+        return new CustomQueryRequest
+        {
+            Bins = new List<Bin>
+            {
+                new() { ID = "custom_bin_1", Length = 10, Width = 40, Height = 60 },
+                new() { ID = "custom_bin_2", Length = 20, Width = 40, Height = 60 },
+            },
+            Items = new List<Box>
+            {
+                new() { ID = "box_1", Quantity = 2, Length = 2, Width = 5, Height = 10 },
+                new() { ID = "box_2", Quantity = 1, Length = 12, Width = 15, Height = 10 },
+                new() { ID = "box_3", Quantity = 1, Length = 12, Width = 10, Height = 15 },
+            }
+        };
+    }
 }
 ```
 
-### Multiple Example
+### Multiple Examples
+For multiple examples, implement the GetExamples method:
+
 ```csharp
 public class CustomQueryResponseExamples : MultipleSwaggerExamplesProvider<QueryResponse>
 {
-	public override IEnumerable<ISwaggerExample<QueryResponse>> GetExamples()
-	{
-		yield return SwaggerExample.Create("success", "Found Bin", "Response example when a bin is found", new QueryResponse
-		{
-			Result = ResultType.Success,
-			Bin = new() { ID = "custom_bin_1", Length = 10, Width = 40, Height = 60 },
-		});
+    public override IEnumerable<ISwaggerExample<QueryResponse>> GetExamples()
+    {
+        yield return SwaggerExample.Create("success", "Found Bin", "Response example when a bin is found", new QueryResponse
+        {
+            Result = ResultType.Success,
+            Bin = new() { ID = "custom_bin_1", Length = 10, Width = 40, Height = 60 },
+        });
 
-		yield return SwaggerExample.Create("failure", "Bin not Found", "Response example when a bin is not found", new QueryResponse
-		{
-			Result = ResultType.Failure,
-			Message = "Failed to find bin. Reason: ItemDimensionExceeded"
-		});
-	}
+        yield return SwaggerExample.Create("failure", "Bin not Found", "Response example when a bin is not found", new QueryResponse
+        {
+            Result = ResultType.Failure,
+            Message = "Failed to find bin. Reason: ItemDimensionExceeded"
+        });
+    }
 }
 ```
 
 ## Using the Examples
+To display the custom examples in Swagger, annotate your methods with SwaggerRequestExampleAttribute for request examples and SwaggerResponseExampleAttribute for response examples:
 
-In order for Swagger to display the custom examples you must indicate the example to be used on each method.
-You can use the `SwaggerRequestExampleAttribute` to set the example for the request and the `SwaggerResponseExampleAttribute` for the response.
 ```csharp
 [HttpPost("by-custom")]
 [Consumes("application/json")]
@@ -102,10 +108,9 @@ You can use the `SwaggerRequestExampleAttribute` to set the example for the requ
 [SwaggerResponseExample(typeof(ErrorResponse), typeof(ServerErrorResponseExample), StatusCodes.Status500InternalServerError)]
 public override async Task<IActionResult> HandleAsync(CustomQueryRequestWithBody request, CancellationToken cancellationToken = default)
 {
-  ...
+    // Your implementation here
 }
 ```
-
 
 ## License
 
